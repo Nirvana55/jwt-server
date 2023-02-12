@@ -4,6 +4,17 @@ import catchAsync from '../utils/catchAsync';
 import { Request, Response } from 'express';
 import { generateJwtToken } from '../utils/jwt';
 
+export const sendTokenAsCookie = async (
+	req: Request,
+	res: Response,
+	id: string
+) => {
+	if (process.env.JWT_EXPIRES) {
+		const token = generateJwtToken(id, process.env.JWT_EXPIRES);
+		res.cookie('token', token, { httpOnly: true, secure: true });
+	}
+};
+
 export const signUpUser = catchAsync(async (req: Request, res: Response) => {
 	const { firstName, email, lastName, address, password } = req.body;
 
@@ -18,12 +29,16 @@ export const signUpUser = catchAsync(async (req: Request, res: Response) => {
 		confirmPassword: encryptPassword,
 	});
 
-	const token = generateJwtToken(createUser._id.toString(), '2h');
-
-	// createUser.token = token;
+	sendTokenAsCookie(req, res, createUser._id.toString());
 
 	res.status(201).json({
 		status: 'Success',
 		message: 'Your account has been created',
+	});
+});
+
+export const welcomeUser = catchAsync(async (req: Request, res: Response) => {
+	res.status(200).json({
+		message: 'You are welcomed',
 	});
 });

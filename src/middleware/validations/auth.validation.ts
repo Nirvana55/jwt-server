@@ -6,9 +6,10 @@ export const registerUserValidation = [
 	body('email')
 		.isEmail()
 		.custom(async (value) => {
-			const findUser = await User.findOne(value);
+			const findUser = await User.findOne({ email: value });
+
 			if (findUser) {
-				throw 'Email is already taken';
+				throw new Error('Email is already taken');
 			}
 		}),
 	body('lastName').isString(),
@@ -16,7 +17,6 @@ export const registerUserValidation = [
 	body('password').isString().isStrongPassword(),
 	body('confirmPassword').custom(async (value, { req }) => {
 		if (value !== req.body.password) {
-			console.log('hello');
 			throw 'Please match the password';
 		}
 	}),

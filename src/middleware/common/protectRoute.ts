@@ -17,8 +17,6 @@ export const protectRoute = catchAsync(
 		if (token) {
 			const user = verifyJwtToken(token) as JwtPayload;
 
-			console.log(user, 'Asd');
-
 			const findUser = User.findOne(user._id);
 
 			if (!findUser) {

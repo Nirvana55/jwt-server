@@ -11,7 +11,10 @@ export const sendTokenAsCookie = async (
 ) => {
 	if (process.env.JWT_EXPIRES) {
 		const token = generateJwtToken(id, process.env.JWT_EXPIRES);
-		res.cookie('token', token, { httpOnly: true, secure: true });
+		res.cookie('jwt', token, {
+			httpOnly: true,
+			secure: req.headers['user-agent']?.startsWith('Postman') ? false : true,
+		});
 	}
 };
 

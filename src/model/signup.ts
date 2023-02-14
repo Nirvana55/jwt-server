@@ -7,7 +7,6 @@ interface SignUp {
 	password: string;
 	confirmPassword: string;
 	email: string;
-	token?: string;
 }
 
 const signUpSchema = new mongoose.Schema<SignUp>({
@@ -34,9 +33,6 @@ const signUpSchema = new mongoose.Schema<SignUp>({
 	confirmPassword: {
 		type: String,
 		required: true,
-	},
-	token: {
-		type: String,
 	},
 });
 

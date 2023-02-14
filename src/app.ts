@@ -1,5 +1,5 @@
 import express from 'express';
-import AuthRouter from './route/auth';
+import AuthRouter from './route/auth.route';
 import dotenv from 'dotenv';
 import path from 'path';
 import cookieParser from 'cookie-parser';

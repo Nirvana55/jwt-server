@@ -17,7 +17,19 @@ export const registerUserValidation = [
 	body('password').isString().isStrongPassword(),
 	body('confirmPassword').custom(async (value, { req }) => {
 		if (value !== req.body.password) {
-			throw 'Please match the password';
+			throw new Error('Please match the password');
 		}
 	}),
+];
+
+export const loginValidation = [
+	body('email')
+		.isEmail()
+		.custom(async (value, { req }) => {
+			const user = await User.findOne({ email: value });
+			if (!user) {
+				throw new Error('User does not exist');
+			}
+			(req as any).user = user;
+		}),
 ];

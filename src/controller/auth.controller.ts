@@ -40,6 +40,25 @@ export const signUpUser = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
+export const loginUser = catchAsync(async (req: Request, res: Response) => {
+	const { password } = req.body;
+
+	const isValidatePassword = await bcrypt.compare(
+		password,
+		(req as any).user.password
+	);
+
+	if (!isValidatePassword) {
+		throw new Error('Password is not valid');
+	}
+	sendTokenAsCookie(req, res, (req as any)._id);
+
+	res.status(200).json({
+		status: 'Success',
+		message: 'You have successfully logged in',
+	});
+});
+
 export const welcomeUser = catchAsync(async (req: Request, res: Response) => {
 	res.status(200).json({
 		message: 'You are welcomed',

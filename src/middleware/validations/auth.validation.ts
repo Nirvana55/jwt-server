@@ -17,7 +17,7 @@ export const registerUserValidation = [
 	body('password').isString().isStrongPassword(),
 	body('confirmPassword').custom(async (value, { req }) => {
 		if (value !== req.body.password) {
-			throw 'Please match the password';
+			throw new Error('Please match the password');
 		}
 	}),
 ];

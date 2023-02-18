@@ -21,3 +21,15 @@ export const registerUserValidation = [
 		}
 	}),
 ];
+
+export const loginValidation = [
+	body('email')
+		.isEmail()
+		.custom(async (value, { req }) => {
+			const user = await User.findOne({ email: value });
+			if (!user) {
+				throw new Error('User does not exist');
+			}
+			(req as any).user = user;
+		}),
+];

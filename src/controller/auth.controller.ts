@@ -18,6 +18,21 @@ export const sendTokenAsCookie = async (
 	}
 };
 
+export const getUserSession = catchAsync(
+	async (req: Request, res: Response) => {
+		const user = (req as any).user;
+
+		res.status(200).json({
+			status: 'Success',
+			message: 'User session fetched successfully',
+			data: {
+				isAuthenticated: true,
+				name: `${user.firstName} ${user.lastName}`,
+			},
+		});
+	}
+);
+
 export const signUpUser = catchAsync(async (req: Request, res: Response) => {
 	const { firstName, email, lastName, address, password } = req.body;
 

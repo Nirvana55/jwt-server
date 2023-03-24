@@ -3,6 +3,7 @@ import {
 	loginUser,
 	signUpUser,
 	welcomeUser,
+	getUserSession,
 } from '../controller/auth.controller';
 import { protectRoute } from '../middleware/common/protectRoute';
 import {
@@ -18,6 +19,7 @@ router.post('/login', validate(loginValidation), loginUser);
 
 router.use(protectRoute);
 
+router.get('/check-user-session', getUserSession);
 router.get('/welcome', welcomeUser);
 
 export default router;

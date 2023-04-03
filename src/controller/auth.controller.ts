@@ -1,4 +1,4 @@
-import User from '../model/signup';
+import User from '../model/auth';
 import bcrypt from 'bcrypt';
 import catchAsync from '../utils/catchAsync';
 import { Request, Response } from 'express';
@@ -26,7 +26,7 @@ export const getUserSession = catchAsync(
 			status: 'Success',
 			message: 'User session fetched successfully',
 			data: {
-				isAuthenticated: true,
+				isAuthenticated: user.isAuthenticated,
 				name: `${user.firstName} ${user.lastName}`,
 			},
 		});
@@ -49,6 +49,10 @@ export const signUpUser = catchAsync(async (req: Request, res: Response) => {
 
 	sendTokenAsCookie(req, res, createUser._id.toString());
 
+	await User.updateOne({
+		isAuthenticated: true,
+	});
+
 	res.status(201).json({
 		status: 'Success',
 		message: 'Your account has been created',
@@ -68,9 +72,22 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
 	}
 	sendTokenAsCookie(req, res, (req as any)._id);
 
+	await User.updateOne({
+		isAuthenticated: true,
+	});
+
 	res.status(200).json({
 		status: 'Success',
 		message: 'You have successfully logged in',
+	});
+});
+
+export const logoutUser = catchAsync(async (req: Request, res: Response) => {
+	res.clearCookie('jwt');
+
+	res.status(200).json({
+		status: 'Success',
+		message: 'You have successfully logged out',
 	});
 });
 

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
-import User from '../../model/signup';
+import User from '../../model/auth';
 import catchAsync from '../../utils/catchAsync';
 import { verifyJwtToken } from '../../utils/jwt';
 
@@ -17,7 +17,7 @@ export const protectRoute = catchAsync(
 		if (token) {
 			const user = verifyJwtToken(token) as JwtPayload;
 
-			const findUser = User.findOne(user._id);
+			const findUser = await User.findOne(user._id);
 
 			if (!findUser) {
 				res.status(404).json({

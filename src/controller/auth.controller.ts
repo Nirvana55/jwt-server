@@ -84,8 +84,11 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const logoutUser = catchAsync(async (req: Request, res: Response) => {
-	res.clearCookie('jwt');
-
+	res.cookie('jwt', '', {
+		httpOnly: true,
+		secure: req.headers['user-agent']?.startsWith('Postman') ? false : true,
+		sameSite: 'none',
+	});
 	await User.updateOne({
 		isAuthenticated: false,
 	});

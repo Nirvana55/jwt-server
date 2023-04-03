@@ -86,6 +86,10 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
 export const logoutUser = catchAsync(async (req: Request, res: Response) => {
 	res.clearCookie('jwt');
 
+	await User.updateOne({
+		isAuthenticated: false,
+	});
+
 	res.status(200).json({
 		status: 'Success',
 		message: 'You have successfully logged out',

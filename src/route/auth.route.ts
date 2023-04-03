@@ -4,6 +4,7 @@ import {
 	signUpUser,
 	welcomeUser,
 	getUserSession,
+	logoutUser,
 } from '../controller/auth.controller';
 import { protectRoute } from '../middleware/common/protectRoute';
 import {
@@ -16,6 +17,7 @@ const router = express.Router();
 
 router.post('/register', validate(registerUserValidation), signUpUser);
 router.post('/login', validate(loginValidation), loginUser);
+router.get('/logout', logoutUser);
 
 router.use(protectRoute);
 

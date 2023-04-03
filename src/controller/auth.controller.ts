@@ -14,6 +14,7 @@ export const sendTokenAsCookie = async (
 		res.cookie('jwt', token, {
 			httpOnly: true,
 			secure: req.headers['user-agent']?.startsWith('Postman') ? false : true,
+			sameSite: 'none',
 		});
 	}
 };
